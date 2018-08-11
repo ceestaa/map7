@@ -1,0 +1,42 @@
+#!/system/bin/sh
+## Android 7.1.2
+
+PATH_locus="/storage/emulated/0/Locus/mapsVector"
+
+if [ ! -d "$PATH_locus" ]; then
+echo "directory Locus lost"; else
+MAP=(
+austria_gccz.map
+bayern_gccz.map
+czech_republic_gccz.map
+croatia_gccz.map
+slovakia_gccz.map
+poland_gccz.map.zip
+georgia_gccz.map
+hungary_gccz.map
+malta_gccz.map
+sachsen_gccz.map
+list
+)
+	IN="a b c d e f g h i j"
+	x=0; for xMAP in $IN; do
+	echo "$xMAP ${MAP[$x]}"
+	x=$(expr $x + 1)
+	done
+echo -n " SELECT MAP: "
+read -n1 VAL; echo
+	x=0; for xMAP in $IN; do
+	[ "$VAL" = "$xMAP" ] && break
+	x=$(expr $x + 1)
+	done
+if [ "${MAP[$x]}" = "list" ]; then
+ ls -lh "$PATH_locus" | sed "s/^[^ ]*[ \t]*[^ ]*[ \t]*[^ ]*[ \t]*[^ ]*//"
+else
+	echo "DOWNLOAD [${MAP[$x]}]"
+  NOW=$(date "+%Y%m%d")
+  NAME=$(echo "${MAP[$x]}" | sed "s/_gccz/_$NOW/")
+curl "http://osm.paws.cz/${MAP[$x]}" > "$PATH_locus/$NAME"
+	echo "COMPLETE [${MAP[$x]}]"
+date
+fi; fi
+
