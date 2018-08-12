@@ -36,7 +36,8 @@ else
   NOW=$(date "+%Y%m%d")
   NAME=$(echo "${MAP[$x]}" | sed "s/_gccz/_$NOW/")
 curl "http://osm.paws.cz/${MAP[$x]}" > "$PATH_locus/$NAME"
-	echo "COMPLETE [${MAP[$x]}]"
+	if [ "$?" = "0" ]; then echo "COMPLETE [${MAP[$x]}]"
+	else echo "FAIL [${MAP[$x]}]"
+	rm "$PATH_locus/$NAME"; fi
 date
 fi; fi
-
